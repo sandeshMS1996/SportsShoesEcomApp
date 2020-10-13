@@ -14,17 +14,21 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("api/customer/products")
 public class ProductController {
-    @Autowired
-    PurchaseService purchaseService;
+    final PurchaseService purchaseService;
 
-    @PostMapping("add-to-cart/{id}")
+    @Autowired
+    public ProductController(PurchaseService purchaseService) {
+        this.purchaseService = purchaseService;
+    }
+
+    @PostMapping("{id}/add-to-cart")
     public ResponseEntity buyProduct(@PathVariable("id") Long id) {
         return ResponseEntity.ok("product " + id + "has been added to cart");
    }
 
-   @PostMapping("/buy-product")
+   @PostMapping("buy-product")
    public ResponseEntity buyProduct() {
        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        Long userId = ((ApplicationUserDetails) principal).getUserID();

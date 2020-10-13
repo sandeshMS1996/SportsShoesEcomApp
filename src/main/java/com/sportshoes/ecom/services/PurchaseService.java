@@ -35,4 +35,8 @@ public class PurchaseService {
     public List<Purchase> getAllMyPurchases(Long id) {
         return purchaseRepo.getPurchasesByCustomerId(id);
     }
+
+    public List<Purchase> getAllPurchases() {
+        return this.purchaseRepo.findAll();
+    }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 public class Customers {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -29,7 +30,6 @@ public class Customers {
     @Column(name = "fname", nullable = false, length = 20)
     private String fname;
 
-
     @Column(name = "lname", nullable = false, length = 30)
     private String lname;
 
@@ -40,7 +40,7 @@ public class Customers {
     @Column(name = "age", nullable = false, length = 3)
     private int age;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_added")
     private Date dateAdded= new Date();
 
@@ -53,12 +53,11 @@ public class Customers {
     @ColumnDefault("true")
     private boolean isActiveUser = true;
 
-    @JsonIgnore
-    @Column(name = "passowrd", nullable = false)
-    private String password;
-
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Purchase> purchases;
+
+    @Column(name = "password", nullable = false)
+    private String password;
 
     public Customers(long ID) {
         this.ID = ID;

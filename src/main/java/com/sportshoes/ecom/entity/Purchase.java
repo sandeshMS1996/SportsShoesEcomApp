@@ -29,7 +29,6 @@ public class Purchase {
     @OneToOne
     @NotNull
     @JoinColumn(nullable = false)
-    @JsonIgnore
     private Customers customer;
 
     @OneToMany

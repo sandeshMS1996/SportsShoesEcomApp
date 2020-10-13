@@ -29,10 +29,7 @@ public class CategoryController {
     public CategoryController(CategoryRepo categoryRepo) {
         this.categoryRepo = categoryRepo;
     }
-    @PostMapping("add-new-category")
-    public Category addNewCategory(@RequestBody Category category) {
-            return this.categoryService.addNewCategory(category);
-    }
+
 
     @GetMapping()
     @ResponseBody
@@ -41,14 +38,7 @@ public class CategoryController {
         List<Category> categories = this.categoryRepo.findAll();
         return categories;
     }
-    @GetMapping(value = "{id}")
-    public Category getCategoryById(@PathVariable Long id) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((ApplicationUserDetails) principal).getUsername();
-        Long userId=  ((ApplicationUserDetails) principal).getUserID();
-        System.out.println("Current user " + username + " " + userId);
-        return this.categoryRepo.findById(id).orElseThrow(()-> new ProductNotFoundException("xx"));
-    }
+
 
 
 }

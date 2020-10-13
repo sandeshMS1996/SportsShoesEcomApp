@@ -13,7 +13,6 @@ import java.util.List;
 @Component
 public class CustomerService  {
 
-
     private CustomerRepo repo;
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -22,15 +21,12 @@ public class CustomerService  {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-
-
     public Customers addNewCustomer(Customers customers) {
+        System.out.println(customers);
         if(customers.getPassword() == null) {
             throw new IllegalArgumentException("Password cannot be null");
         }
-        customers.setPassword(passwordEncoder.encode(customers.getPassword()));
-        return this.repo.save(customers);
+        return this.repo.saveAndFlush(customers);
     }
 
     @Transactional
