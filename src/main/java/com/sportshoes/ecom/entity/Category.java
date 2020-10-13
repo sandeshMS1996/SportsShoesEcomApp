@@ -1,5 +1,6 @@
 package com.sportshoes.ecom.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jdk.jfr.Enabled;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ public class Category {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ManyToOne
+    @JsonIgnore
+    Customers admin;
 
     public Category(long ID) {
         this.ID = ID;

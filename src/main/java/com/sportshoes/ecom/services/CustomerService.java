@@ -2,21 +2,27 @@ package com.sportshoes.ecom.services;
 
 import com.sportshoes.ecom.entity.Customers;
 import com.sportshoes.ecom.repos.CustomerRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.sportshoes.ecom.security.ApplicationUserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Component
 public class CustomerService  {
+
+
     private CustomerRepo repo;
     private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
+
     public CustomerService(CustomerRepo repo, BCryptPasswordEncoder passwordEncoder) {
         this.repo = repo;
         this.passwordEncoder = passwordEncoder;
     }
+
+
 
 
     public Customers addNewCustomer(Customers customers) {
@@ -26,4 +32,20 @@ public class CustomerService  {
         customers.setPassword(passwordEncoder.encode(customers.getPassword()));
         return this.repo.save(customers);
     }
+
+    @Transactional
+    public String changePassword(String newPassword) {
+        ApplicationUserDetails principal = (ApplicationUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userID = principal.getUserID();
+        System.out.println("changing password for " + userID + " new Pass " + newPassword );
+        this.repo.changeMyPassword(this.passwordEncoder.encode(newPassword), userID);
+        return newPassword;
+    }
+
+    public List<Customers> getAllRegisteredUsers() {
+        return this.repo.getAllRegisteredUsers();
+    }
+
+
+
 }

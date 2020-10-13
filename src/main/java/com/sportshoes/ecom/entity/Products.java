@@ -1,11 +1,13 @@
 package com.sportshoes.ecom.entity;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -40,4 +42,11 @@ public class Products {
     private Category categoryId;
 
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    Customers Admin;
+
+    public Products(Long ID) {
+        this.ID = ID;
+    }
 }

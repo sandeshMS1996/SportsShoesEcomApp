@@ -1,18 +1,22 @@
 package com.sportshoes.ecom.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +53,20 @@ public class Customers {
     @ColumnDefault("true")
     private boolean isActiveUser = true;
 
+    @JsonIgnore
     @Column(name = "passowrd", nullable = false)
     private String password;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Purchase> purchases;
+
+    public Customers(long ID) {
+        this.ID = ID;
+    }
 
     public enum Role {
         USER, ADMIN
     }
+
+
 }

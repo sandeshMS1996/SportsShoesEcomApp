@@ -21,7 +21,7 @@ public class ApplicationUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customers.getRole().toString());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customers.getRole().name());
         System.out.println(authority.getAuthority());
         return Arrays.asList(authority);
     }
@@ -54,5 +54,9 @@ public class ApplicationUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return customers.isActiveUser();
+    }
+
+    public Long getUserID() {
+        return this.customers.getID();
     }
 }
