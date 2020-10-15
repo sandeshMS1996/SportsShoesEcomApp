@@ -1,17 +1,14 @@
 package com.sportshoes.ecom.entity;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -31,7 +28,7 @@ public class Products {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private int price;
 
     @Column(name = "date_added")
     @Temporal(TemporalType.DATE)
@@ -48,5 +45,20 @@ public class Products {
 
     public Products(Long ID) {
         this.ID = ID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Products products = (Products) o;
+
+        return getID() != null ? getID().equals(products.getID()) : products.getID() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getID() != null ? getID().hashCode() : 0;
     }
 }

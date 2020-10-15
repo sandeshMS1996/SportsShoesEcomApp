@@ -7,20 +7,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import javax.persistence.*;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-
 public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,21 +30,15 @@ public class Purchase {
     @JoinColumn(nullable = false)
     private Customers customer;
 
-    @OneToMany
-    private List<Products> product =  new ArrayList<>();
-
-    private int quantity;
+    @ElementCollection
+    @CollectionTable(name = "products_quantity")
+    @MapKeyJoinColumn(name = "product_id")
+    Map<Products, Integer> product = new HashMap<>();
 
     @Nullable
     Long totalPrice;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    Date purchaseDate = new Date();
+    @CreationTimestamp
+    LocalDateTime purchaseDate;
 
-    public Purchase(Customers customer, List<Products> product, int quantity, Long totalPrice) {
-        this.customer = customer;
-        this.product = product;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
-    }
 }

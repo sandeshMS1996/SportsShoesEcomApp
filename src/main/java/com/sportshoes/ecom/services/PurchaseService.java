@@ -19,16 +19,7 @@ public class PurchaseService {
     @Autowired
     PurchaseRepo purchaseRepo;
 
-    public Purchase savePurchase(long customerID, List<Long> productId) {
-        List<Products> products = new ArrayList<>();
-        for (Long aLong : productId) {
-            products.add(new Products(aLong));
-        }
-        Purchase purchase = new Purchase();
-        purchase.setCustomer(new Customers(customerID));
-        purchase.setProduct(products);
-        purchase.setQuantity(5);
-        purchase.setTotalPrice(1000L);
+    public Purchase savePurchase(Purchase purchase) {
         return purchaseRepo.save(purchase);
     }
 
@@ -39,4 +30,5 @@ public class PurchaseService {
     public List<Purchase> getAllPurchases() {
         return this.purchaseRepo.findAll();
     }
+
 }

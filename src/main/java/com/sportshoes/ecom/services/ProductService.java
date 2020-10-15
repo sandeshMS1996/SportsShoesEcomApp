@@ -37,4 +37,12 @@ public class ProductService {
     public void deleteProduct(Long id) {
         this.productRepo.deleteById(id);
     }
+
+    public int getProductPrice(Long id) {
+        return this.productRepo.getProductPrice(id);
+    }
+
+    public boolean findProduct(Long id) {
+        return this.productRepo.existsById(id);
+    }
 }
