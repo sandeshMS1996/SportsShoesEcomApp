@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -46,9 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**").permitAll()
-                    .antMatchers("/swagger**/**", "/v2/**").permitAll()
+                    .antMatchers("/api/admin/add-new-product")
+                    .hasRole("ADMIN")
                     .antMatchers("/authenticate", "/api/customer/*")
                     .permitAll()
+                    .antMatchers("/api/admin/**").hasRole("ADMIN")
+
                     .anyRequest().authenticated();
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -1,13 +1,12 @@
 package com.sportshoes.ecom.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,12 +16,15 @@ import java.util.List;
 @Setter
 @ToString
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Customers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private long ID;
+
 
     @Column(name = "emailid", unique = true, length = 50, nullable = false)
     private String emailId;
@@ -40,14 +42,13 @@ public class Customers {
     @Column(name = "age", nullable = false, length = 3)
     private int age;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @Column(name = "date_added")
-    private Date dateAdded= new Date();
+    private LocalDateTime dateAdded;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("USER")
     @Column(nullable = false)
-    private Role role = Role.USER;
+    private Role role;
 
     @Column
     @ColumnDefault("true")
@@ -64,7 +65,7 @@ public class Customers {
     }
 
     public enum Role {
-        USER, ADMIN
+        ROLE_USER, ROLE_ADMIN
     }
 
 

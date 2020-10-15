@@ -14,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,7 +27,7 @@ public class AdminController {
 
     private final ProductService productService;
     private final CustomerService customerService;
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
     private final PurchaseService purchaseService;
     @Autowired
     public AdminController(ProductService productService,
@@ -39,15 +41,18 @@ public class AdminController {
     }
 
     @PostMapping("add-new-product")
-    public Products addProduct(@RequestBody Products product) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userID = ((ApplicationUserDetails) principal).getUserID();
-        product.setAdmin(new Customers(userID));
+    public Products addProduct(@RequestBody Products product, @AuthenticationPrincipal ApplicationUserDetails details) {
+        /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userID = ((ApplicationUserDetails) principal).getUserID();*/
+        product.setAdmin(new Customers(details.getUserID()));
         return this.productService.addNewProduct(product);
     }
 
+    @Validated
     @PostMapping("add-new-category")
-    public Category addNewCategory(@RequestBody Category category) {
+    public Category addNewCategory(@Valid @RequestBody Category category,
+                                   @AuthenticationPrincipal ApplicationUserDetails details) {
+        category.setAdmin(new Customers(details.getUserID()));
         return this.categoryService.addNewCategory(category);
     }
 
@@ -64,7 +69,7 @@ public class AdminController {
     }
 
     @GetMapping("category/get-all-categories")
-    public List<Category> getAddCategories(@AuthenticationPrincipal User user) {
+    public List<Category> getAddCategories() {
          return this.categoryService.getAllCategories();
     }
 

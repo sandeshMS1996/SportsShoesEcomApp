@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "category")
@@ -18,11 +19,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
 
+    @Size(min = 5, max = 20, message = "size should be 5-20 characters")
     @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne
-    @JsonIgnore
     Customers admin;
 
     public Category(long ID) {
