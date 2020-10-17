@@ -1,5 +1,7 @@
 package com.sportshoes.ecom.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportshoes.ecom.entity.Cart;
 import com.sportshoes.ecom.entity.Customers;
 import com.sportshoes.ecom.entity.Products;
@@ -35,9 +37,9 @@ public class ProductController {
         Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
         if(cart==null)
             cart = new HashMap<>();
-        Integer price = (Integer) session.getAttribute("price");
+        Long price = (Long) session.getAttribute("price");
         if(price == null)
-            price = 0;
+            price = 0L;
         if(!this.productService.findProduct(newCart.getProductId()))
             throw new ProductNotFoundException("Product " + newCart.getProductId() + " not found");
         price +=this.productService.getProductPrice(newCart.getProductId());
@@ -49,30 +51,36 @@ public class ProductController {
    }
 
    @GetMapping("viewCart")
-   public ResponseEntity viewCart(HttpSession session) {
+   public ResponseEntity viewCart(HttpSession session) throws JsonProcessingException {
        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
        System.out.println("cart  " + cart);
        if(cart == null)
            return ResponseEntity.ok("Cart is empty");
        Integer price = (Integer) session.getAttribute("price");
-       return ResponseEntity.ok(cart.toString() + "\n\n" + "total Price " + price );
+       String json = new ObjectMapper().writeValueAsString(cart);
+       return ResponseEntity.ok(json + "\n\n" + "total Price " + price );
     }
 
    @PostMapping("buy-product")
    public ResponseEntity buyProduct(@AuthenticationPrincipal ApplicationUserDetails user, HttpSession session) {
        Map<Products, Integer> purchaseBag =new HashMap<> ();
        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+       if(cart == null)
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cart is empty");
        for (Map.Entry<Long, Integer> entry : cart.entrySet()) {
            purchaseBag.put(new Products(entry.getKey()),entry.getValue());
        }
-       if(cart == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cart is empty");
+
        Purchase purchase = new Purchase();
 
+       Long price = (Long) session.getAttribute("price");
+        purchase.setTotalPrice(price);
        purchase.setCustomer(new Customers(user.getUserID()));
         purchase.setProduct(purchaseBag);
        System.out.println(purchase);
        this.purchaseService.savePurchase(purchase);
+       session.setAttribute("cart", null);
+       session.setAttribute("price", null);
        return ResponseEntity.ok("success");
    }
 

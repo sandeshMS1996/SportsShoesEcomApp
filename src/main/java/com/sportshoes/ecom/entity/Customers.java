@@ -1,9 +1,12 @@
 package com.sportshoes.ecom.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +21,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Where(clause = "is_active_user=true")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Customers {
 
     @Id
@@ -50,13 +55,13 @@ public class Customers {
     @Column(nullable = false)
     private Role role;
 
-    @Column
-    @ColumnDefault("true")
-    private boolean isActiveUser = true;
+    @Column(name = "is_active_user")
+    private boolean isActiveUser;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Purchase> purchases;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -66,6 +71,11 @@ public class Customers {
 
     public enum Role {
         ROLE_USER, ROLE_ADMIN
+    }
+
+    @PrePersist
+    private void activateUser() {
+        this.isActiveUser = true;
     }
 
 

@@ -43,6 +43,10 @@ public class CustomerService  {
         return this.repo.getAllRegisteredUsers();
     }
 
+    public void softDeleteAccount(Long id) {
+        this.repo.softDeleteAccount(id);
+    }
+
 
 
 }

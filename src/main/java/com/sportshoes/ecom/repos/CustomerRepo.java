@@ -22,6 +22,12 @@ public interface CustomerRepo extends JpaRepository<Customers, Long> {
     @Query("update Customers c set c.password = :newPassword where c.ID = :userId ")
     void changeMyPassword(@Param("newPassword") String newPassword, @Param("userId") Long userId);
 
-    @Query("select c from Customers c where c.role = 'USER'")
+    @Query("select c from Customers c where c.role = 'ROLE_USER'")
     List<Customers> getAllRegisteredUsers();
+
+    @Modifying
+    @Transactional
+    @Query("update Customers c set c.isActiveUser = false where c.ID = :id")
+    void softDeleteAccount(@Param("id") Long id);
+
 }

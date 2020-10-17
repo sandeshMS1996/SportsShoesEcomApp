@@ -84,9 +84,21 @@ public class AdminController {
         return ResponseEntity.ok("Category " + id + "deleted");
     }
 
-    @PostMapping("product/delete-product/{id}")
+    @DeleteMapping("product/delete-product/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") Long id) {
         this.productService.deleteProduct(id);
         return ResponseEntity.ok("Product " + id + "deleted");
     }
+
+    @DeleteMapping("account/delete-account/{id}")
+    public void deleteAccount(@PathVariable("id") Long id) {
+        this.customerService.softDeleteAccount(id);
+    }
+
+    @DeleteMapping("category/delete-category/{categoryId}")
+    public void deleteCategory(@PathVariable("categoryId") long id) {
+        this.categoryService.softDeleteCategory(id);
+    }
+
+
 }

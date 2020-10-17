@@ -1,5 +1,6 @@
 package com.sportshoes.ecom.exceptions;
 
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,12 @@ public class CustomExceptionHandlers extends RuntimeException {
     }
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<String> handleValidationException(ProductNotFoundException e) {
+        System.out.println("catcing JST Exception");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(io.jsonwebtoken.MalformedJwtException.class)
+    public ResponseEntity<String> handleJWTException() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("invalid JWt token");
     }
 }
