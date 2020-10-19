@@ -5,6 +5,7 @@ import com.sportshoes.ecom.exceptions.ProductNotFoundException;
 import com.sportshoes.ecom.repos.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,6 +16,7 @@ import javax.security.auth.login.CredentialException;
 
 @Service
 @Primary
+@Profile("!test")
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private CustomerRepo customerRepo;

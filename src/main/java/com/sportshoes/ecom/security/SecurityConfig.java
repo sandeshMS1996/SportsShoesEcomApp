@@ -32,25 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        System.out.println(passwordEncoder.encode("pass"));
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable().authorizeRequests()
-        .antMatchers("/v2/api-docs",
+        /*.antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",
                 "/configuration/security",
                 "/swagger-ui.html",
-                "/webjars/**").permitAll()
-                    .antMatchers("/api/admin/add-new-product")
-                    .hasRole("ADMIN")
-                    .antMatchers("/authenticate", "/api/customer/*")
-                    .permitAll()
-                    .antMatchers("/api/admin/**").hasRole("ADMIN")
-
-                    .anyRequest().authenticated();
+                "/webjars/**").permitAll()*/
+                    .antMatchers("/api/admin/admin/*").hasRole("ADMIN")
+                    .antMatchers("/api/customer/*").hasAnyRole("USER", "ADMIN")
+                    .anyRequest().permitAll();
             http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

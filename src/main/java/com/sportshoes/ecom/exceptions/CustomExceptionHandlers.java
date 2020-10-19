@@ -1,6 +1,7 @@
 package com.sportshoes.ecom.exceptions;
 
 import io.jsonwebtoken.MalformedJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,14 @@ import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class CustomExceptionHandlers extends RuntimeException {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public  ResponseEntity<String> JsonParseException(HttpMessageNotReadableException e) {
         System.out.println("caught this exception");
-
+        log.info(e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body("Invalid JSON Object Provided");
     }
@@ -47,7 +49,8 @@ public class CustomExceptionHandlers extends RuntimeException {
     }
 
     @ExceptionHandler(io.jsonwebtoken.MalformedJwtException.class)
-    public ResponseEntity<String> handleJWTException() {
+    public ResponseEntity<String> handleJWTException(MalformedJwtException e) {
+
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("invalid JWt token");
     }
 }

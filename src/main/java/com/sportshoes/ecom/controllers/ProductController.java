@@ -50,13 +50,13 @@ public class ProductController {
         return ResponseEntity.ok("product ID" + newCart.getProductId() + " has been added to cart");
    }
 
-   @GetMapping("viewCart")
+   @GetMapping("view-cart")
    public ResponseEntity viewCart(HttpSession session) throws JsonProcessingException {
        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
        System.out.println("cart  " + cart);
        if(cart == null)
            return ResponseEntity.ok("Cart is empty");
-       Integer price = (Integer) session.getAttribute("price");
+       Long price = (Long) session.getAttribute("price");
        String json = new ObjectMapper().writeValueAsString(cart);
        return ResponseEntity.ok(json + "\n\n" + "total Price " + price );
     }

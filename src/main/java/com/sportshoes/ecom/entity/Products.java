@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @ToString
@@ -48,6 +47,12 @@ public class Products {
 
     public Products(Long adminID, Long categoryId, String name, int price) {
         this.Admin = new Customers(adminID);
+        this.categoryId = new Category(categoryId);
+        this.name = name;
+        this.price = price;
+    }
+
+    public Products(Long categoryId, String name, int price) {
         this.categoryId = new Category(categoryId);
         this.name = name;
         this.price = price;

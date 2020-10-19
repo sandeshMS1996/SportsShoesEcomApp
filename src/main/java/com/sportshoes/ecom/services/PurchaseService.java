@@ -10,8 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class PurchaseService {
@@ -31,4 +34,18 @@ public class PurchaseService {
         return this.purchaseRepo.findAll();
     }
 
+    public List<Purchase> getPurchasesByCategory(Long id) {
+        List<Purchase> filtered =  new ArrayList<>();
+        for(Purchase i: this.purchaseRepo.findAll()) {
+            for ( Map.Entry<Products, Integer> j: i.getProduct().entrySet()) {
+                if(j.getKey().getCategoryId().getID() == id)
+                    filtered.add(i);
+            }
+        }
+        return filtered;
+    }
+
+    public List<Purchase> filterPurchaseByDate(LocalDate date) {
+        return this.purchaseRepo.filterProductsByDate(date);
+    }
 }

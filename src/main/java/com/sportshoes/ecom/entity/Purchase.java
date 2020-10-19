@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,6 +40,6 @@ public class Purchase {
     Long totalPrice;
 
     @CreationTimestamp
-    LocalDateTime purchaseDate;
+    LocalDate purchaseDate;
 
 }

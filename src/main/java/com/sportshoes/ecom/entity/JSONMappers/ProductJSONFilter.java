@@ -3,6 +3,7 @@ package com.sportshoes.ecom.entity.JSONMappers;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.sportshoes.ecom.entity.Category;
 import com.sun.istack.NotNull;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
@@ -10,16 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
-@JsonFilter("ProudctFilter")
+@Data
 public class ProductJSONFilter {
-    private Long ID;
 
-    private String name;
+    private final String name;
 
-    private int price;
+    private final int price;
 
-    private LocalDateTime dateAdded;
-
-    private Category categoryId;
+    private final Long categoryId;
 
 }

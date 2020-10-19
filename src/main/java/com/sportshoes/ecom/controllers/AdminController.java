@@ -2,6 +2,8 @@ package com.sportshoes.ecom.controllers;
 
 import com.sportshoes.ecom.entity.Category;
 import com.sportshoes.ecom.entity.Customers;
+import com.sportshoes.ecom.entity.JSONMappers.CategoryJSONMapper;
+import com.sportshoes.ecom.entity.JSONMappers.ProductJSONFilter;
 import com.sportshoes.ecom.entity.Products;
 import com.sportshoes.ecom.entity.Purchase;
 import com.sportshoes.ecom.security.ApplicationUserDetails;
@@ -10,6 +12,7 @@ import com.sportshoes.ecom.services.CustomerService;
 import com.sportshoes.ecom.services.ProductService;
 import com.sportshoes.ecom.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -41,18 +46,20 @@ public class AdminController {
     }
 
     @PostMapping("add-new-product")
-    public Products addProduct(@RequestBody Products product, @AuthenticationPrincipal ApplicationUserDetails details) {
+    public Products addProduct(@RequestBody ProductJSONFilter productFilter, @AuthenticationPrincipal ApplicationUserDetails details) {
         /*Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userID = ((ApplicationUserDetails) principal).getUserID();*/
+        Products product = new Products(productFilter.getCategoryId(), productFilter.getName(), productFilter.getPrice());
         product.setAdmin(new Customers(details.getUserID()));
         return this.productService.addNewProduct(product);
     }
 
     @Validated
     @PostMapping("add-new-category")
-    public Category addNewCategory(@Valid @RequestBody Category category,
+    public Category addNewCategory(@Valid @RequestBody CategoryJSONMapper categoryMapper,
                                    @AuthenticationPrincipal ApplicationUserDetails details) {
-        category.setAdmin(new Customers(details.getUserID()));
+        Category category = new Category(details.getUserID(), categoryMapper.getName());
+        //category.setAdmin(new Customers(details.getUserID()));
         return this.categoryService.addNewCategory(category);
     }
 
@@ -73,16 +80,16 @@ public class AdminController {
          return this.categoryService.getAllCategories();
     }
 
-    @GetMapping("purchase-summery")
+    @GetMapping("purchase-summary")
     public List<Purchase> getPurchaseSummary() {
         return this.purchaseService.getAllPurchases();
     }
 
-    @PostMapping("category/delete-category/{id}")
+    /*@DeleteMapping("category/delete-category/{id}")
     public ResponseEntity deleteCategory(@PathVariable("id") Long id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("Category " + id + "deleted");
-    }
+    }*/
 
     @DeleteMapping("product/delete-product/{id}")
     public ResponseEntity deleteProduct(@PathVariable("id") Long id) {
@@ -100,5 +107,14 @@ public class AdminController {
         this.categoryService.softDeleteCategory(id);
     }
 
+    @GetMapping("purchase/filter-purchase-by-category/{id}")
+    public ResponseEntity filterByCategory(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(this.purchaseService.getPurchasesByCategory(id));
+    }
 
+    @GetMapping("purchase/filter-purchase-by-date/{date}")
+    public ResponseEntity filterByCategory(@PathVariable("date")  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+        System.out.println("localDate " + date);
+        return ResponseEntity.ok(this.purchaseService.filterPurchaseByDate(date));
+    }
 }
