@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class RegistrationTest {
 
-    @Autowired
+    /*@Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -39,7 +39,7 @@ public class RegistrationTest {
         Mockito.when(this.customerRepo.save(customers)).thenReturn(customers);
 
         mockMvc.perform(post("/api/register").contentType("application/json")
-        .content(this.objectMapper.writeValueAsString(customers))).andExpect(status().isBadRequest());
+        .content(this.objectMapper.writeValueAsString(customers))).andExpect(status().isBadRequest());*/
 
 
     }

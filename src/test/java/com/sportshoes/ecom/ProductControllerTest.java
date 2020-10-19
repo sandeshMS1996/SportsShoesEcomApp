@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(ProductController.class)
 public class ProductControllerTest {
 
-    @Autowired
+   /* @Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -30,5 +30,5 @@ public class ProductControllerTest {
     @Test
     public void testIt() {
         //Mockito.when();
-    }
+    }*/
 }
