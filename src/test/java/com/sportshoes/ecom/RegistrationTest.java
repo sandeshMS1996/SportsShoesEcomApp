@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class RegistrationTest {
 
-    @Autowired
+    /*@Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -42,6 +42,6 @@ public class RegistrationTest {
         .content(this.objectMapper.writeValueAsString(customers))).andExpect(status().isBadRequest());
 
 
-    }
+    }*/
 
 }
