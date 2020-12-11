@@ -30,7 +30,7 @@ pipeline {
                 sh 'who'
                 sh 'scp -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/ProdServer.pem target/*.jar ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ubuntu'
 
-                sh 'ssh -i /var/lib/jenkins/ProdServer.pem ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com /'./start.sh/''
+                sh "ssh -i "ProdServer.pem" ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com './start.sh'"
             }
             }
 
