@@ -28,7 +28,7 @@ pipeline {
                 //sh 'scp -i /home/ec2-user/ProdServer.pem target/*.jar ec2-user@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ec2-user'
                 sh 'pwd'
                 sh 'who'
-                sh 'scp -v -o StrictHostKeyChecking=no -i /home/ec2-user/ProdServer.pem target/*.jar ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ubuntu'
+                sh 'scp -v -o StrictHostKeyChecking=no -i /var/lib/jenkins/ProdServer.pem target/*.jar ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ubuntu'
                 //sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@00.00.00.00 '/home/ubuntu/start.sh'"
             }
             }
