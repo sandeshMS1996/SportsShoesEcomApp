@@ -2,7 +2,6 @@ package com.sportshoes.ecom.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jdk.jfr.Enabled;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
