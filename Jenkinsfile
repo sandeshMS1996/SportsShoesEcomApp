@@ -25,7 +25,8 @@ pipeline {
                 success {
                     archiveArtifacts 'target/*.jar'
                 // target - /var/lib/jenkins/workspace/test-pipeline/target
-                sh 'sudo scp -i /home/ec2-user/ProdServer.pem target/*.jar ec2-user@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/homeec2-user'
+                //sh 'scp -i /home/ec2-user/ProdServer.pem target/*.jar ec2-user@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ec2-user'
+                sh 'sudo scp  -i /home/ec2-user/ProdServer.pem target/*.jar ubuntu@ec2-3-137-201-53.us-east-2.compute.amazonaws.com:/home/ubuntu'
                 //sh "sshpass -p password ssh -o StrictHostKeyChecking=no -i /var/lib/jenkins/secrets/mykey ubuntu@00.00.00.00 '/home/ubuntu/start.sh'"
             }
             }
