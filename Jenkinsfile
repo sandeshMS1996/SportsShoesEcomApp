@@ -7,7 +7,7 @@ pipeline {
 
     stages {
         stage('Build') {
-            IP  {
+            steps {
                 git 'https://github.com/sandeshMS1996/SportsShoesEcomApp.git'
 
                 sh "mvn clean install -DskipTests"
